@@ -1,7 +1,7 @@
 # Личный проект «Пиксель хантер» [![Build status][travis-image]][travis-url]
 
 * Студент: [Павел Климов](https://up.htmlacademy.ru/ecmascript/7/user/842877).
-* Наставник: `Неизвестно`.
+* Наставник: [Евгений Сальников](https://htmlacademy.ru/profile/id24537).
 
 ---
 
