@@ -1,5 +1,3 @@
-'use strict';
-
 (function () {
   const PAGE_TEMPLATE_ID_ARRAY = [`intro`, `greeting`, `rules`, `game-1`, `game-2`, `game-3`, `stats`, `modal-error`, `modal-confirm`];
   const LEFT_KEYCODE = 37;
