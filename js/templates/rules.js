@@ -1,37 +1,53 @@
 import getElementFromTemplate from '../moduls/get-element-from-template';
-import greetingPage from './greeting';
+import getGreetingPage from './greeting';
+import getGameOnePage from './game-1';
 import changeContent from '../moduls/change-content';
 
-const template = getElementFromTemplate(`<header class="header">
-<button class="back">
-  <span class="visually-hidden">Вернуться к началу</span>
-  <svg class="icon" width="45" height="45" viewBox="0 0 45 45" fill="#000000">
-    <use xlink:href="img/sprite.svg#arrow-left"></use>
-  </svg>
-  <svg class="icon" width="101" height="44" viewBox="0 0 101 44" fill="#000000">
-    <use xlink:href="img/sprite.svg#logo-small"></use>
-  </svg>
-</button>
-</header>
-<section class="rules">
-<h2 class="rules__title">Правила</h2>
-<ul class="rules__description">
-  <li>Угадай 10 раз для каждого изображения фото
-    <img class="rules__icon" src="img/icon-photo.png" width="32" height="31" alt="Фото"> или рисунок
-    <img class="rules__icon" src="img/icon-paint.png" width="32" height="31" alt="Рисунок"></li>
-  <li>Фотографиями или рисунками могут быть оба изображения.</li>
-  <li>На каждую попытку отводится 30 секунд.</li>
-  <li>Ошибиться можно не более 3 раз.</li>
-</ul>
-<p class="rules__ready">Готовы?</p>
-<form class="rules__form">
-  <input class="rules__input" type="text" placeholder="Ваше Имя">
-  <button class="rules__button  continue" type="submit" disabled>Go!</button>
-</form>
-</section>`);
+const getRulesPage = function () {
+  const template = getElementFromTemplate(`
+  <header class="header">
+    <button class="back">
+      <span class="visually-hidden">Вернуться к началу</span>
+      <svg class="icon" width="45" height="45" viewBox="0 0 45 45" fill="#000000">
+        <use xlink:href="img/sprite.svg#arrow-left"></use>
+      </svg>
+      <svg class="icon" width="101" height="44" viewBox="0 0 101 44" fill="#000000">
+        <use xlink:href="img/sprite.svg#logo-small"></use>
+      </svg>
+    </button>
+    </header>
+    <section class="rules">
+    <h2 class="rules__title">Правила</h2>
+    <ul class="rules__description">
+      <li>Угадай 10 раз для каждого изображения фото
+        <img class="rules__icon" src="img/icon-photo.png" width="32" height="31" alt="Фото"> или рисунок
+        <img class="rules__icon" src="img/icon-paint.png" width="32" height="31" alt="Рисунок"></li>
+      <li>Фотографиями или рисунками могут быть оба изображения.</li>
+      <li>На каждую попытку отводится 30 секунд.</li>
+      <li>Ошибиться можно не более 3 раз.</li>
+    </ul>
+    <p class="rules__ready">Готовы?</p>
+    <form class="rules__form">
+      <input class="rules__input" type="text" placeholder="Ваше Имя" required>
+      <button class="rules__button  continue" type="submit" disabled>Go!</button>
+    </form>
+  </section>`);
+  const form = template.querySelector(`.rules__form`);
+  const submitButton = template.querySelector(`.rules__button`);
 
-template.querySelector(`.back`).addEventListener(`click`, () => {
-  changeContent(greetingPage);
-});
+  template.querySelector(`.back`).addEventListener(`click`, () => {
+    changeContent(getGreetingPage());
+  });
+  form.addEventListener(`input`, () => {
+    submitButton.disabled = (form.checkValidity()) ? false : true;
+  });
+  submitButton.addEventListener(`click`, (evt) => {
+    evt.preventDefault();
+    if (form.checkValidity()) {
+      changeContent(getGameOnePage());
+    }
+  });
+  return template;
+};
 
-export default template;
+export default getRulesPage;
