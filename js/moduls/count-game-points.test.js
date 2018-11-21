@@ -47,7 +47,7 @@ const MOCK_ANSWERS_ARRAY = {
     ],
     result: 1500
   },
-  allArror: {
+  allError: {
     array: [
       {time: 10, isCorrect: false},
       {time: 20, isCorrect: false},
@@ -123,7 +123,35 @@ const MOCK_ANSWERS_ARRAY = {
     ],
     result: 600
   },
-
+  errorInIsCorrect: {
+    array: [
+      {time: 11, isCorrect: `true`},
+      {time: 20, isCorrect: 5},
+      {time: 3, isCorrect: {isCorrect: true}},
+      {time: 30, isCorrect: [false]},
+      {time: 4, isCorrect: [true, true]},
+      {time: 15, isCorrect: null},
+      {time: 25, isCorrect: true},
+      {time: 8, isCorrect: true},
+      {time: 14, isCorrect: true},
+    ],
+    result: 600
+  },
+  errorInTime: {
+    array: [
+      {time: `11`, isCorrect: true},
+      {time: [20], isCorrect: false},
+      {time: {time: 3}, isCorrect: true},
+      {time: true, isCorrect: false},
+      {time: [4.4], isCorrect: true},
+      {time: 15.6, isCorrect: true},
+      {time: -25, isCorrect: true},
+      {time: 8, isCorrect: true},
+      {time: 14, isCorrect: true},
+      {time: 28, isCorrect: false},
+    ],
+    result: 600
+  }
 };
 
 describe(`Подсчёт результатов`, () => {
@@ -150,8 +178,10 @@ describe(`Подсчёт результатов`, () => {
   });
 
   it(`Данные с ошибками`, () => {
-    assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.allArror.array, 2), MOCK_ANSWERS_ARRAY.allArror.result + 100);
+    assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.allError.array, 2), MOCK_ANSWERS_ARRAY.allError.result + 100);
     assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.tooLong.array, 2), MOCK_ANSWERS_ARRAY.tooLong.result + 100);
+    assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.errorInTime.array, 2), -1);
+    assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.errorInIsCorrect.array, 2), -1);
     assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed1.array, -1), -1);
     assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed1.array, [2]), -1);
     assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed1.array, {liveCount: 2}), -1);
