@@ -154,7 +154,7 @@ const MOCK_ANSWERS_ARRAY = {
   }
 };
 
-describe(`Подсчёт результатов`, () => {
+describe(`Подсчёт результатов:`, () => {
 
   it(`Простые случаи`, () => {
     assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.min.array, 1), MOCK_ANSWERS_ARRAY.min.result + 50);

@@ -14,7 +14,7 @@ const GAME_RULES = {
 };
 
 const countGamePoints = function (gameResult = null, liveCounter = null) {
-  if (!gameResult || !Array.isArray(gameResult) || (gameResult.length < GAME_RULES.questionCounters) || !Number.isInteger(liveCounter) || (liveCounter < 0)) {
+  if (!Array.isArray(gameResult) || (gameResult.length < GAME_RULES.questionCounters) || !Number.isInteger(liveCounter) || (liveCounter < 0)) {
     return -1;
   }
   let gamePoints = 0;
