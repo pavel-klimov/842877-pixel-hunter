@@ -15,11 +15,15 @@ describe(`changeTimer - функция изменения таймера:`, () =
     assert.equal(changeTimer(null), 0);
   });
 
-  it(`Данные с ошибками`, () => {
-    assert.equal(changeTimer(60), 29);
-    assert.equal(changeTimer(100), 29);
-    assert.equal(changeTimer(0), 0);
-    assert.equal(changeTimer(-10), 0);
+  describe(`Данные с ошибками`, () => {
+    it(`Если таймер больше максимального, возвращает максимум минус 1`, () => {
+      assert.equal(changeTimer(60), 29);
+      assert.equal(changeTimer(100), 29);
+    });
+    it(`Если таймер меньше минимального возвращает 0`, () => {
+      assert.equal(changeTimer(0), 0);
+      assert.equal(changeTimer(-10), 0);
+    });
   });
 
 });
