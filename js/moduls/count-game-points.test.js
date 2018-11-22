@@ -156,7 +156,7 @@ const MOCK_ANSWERS_ARRAY = {
 
 describe(`countGamePoints - функция подсчёта результатов:`, () => {
 
-  describe(`Данные с ошибками`, () => {
+  describe(`Простые случаи`, () => {
     it(`Правильно считает однородный контент (все верны и медленные, нормальные, быстрые)`, () => {
       assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.min.array, 1), MOCK_ANSWERS_ARRAY.min.result + 50);
       assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.max.array, 3), MOCK_ANSWERS_ARRAY.max.result + 150);
