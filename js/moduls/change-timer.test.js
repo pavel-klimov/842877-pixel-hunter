@@ -10,7 +10,7 @@ describe(`changeTimer - функция изменения таймера:`, () =
     assert.equal(changeTimer(1), 0);
   });
 
-  it(`Не достаточно данных`, () => {
+  it(`Если таймер не передан как параметр, возвращает 0`, () => {
     assert.equal(changeTimer(), 0);
     assert.equal(changeTimer(null), 0);
   });

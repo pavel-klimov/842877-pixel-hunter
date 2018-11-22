@@ -156,25 +156,37 @@ const MOCK_ANSWERS_ARRAY = {
 
 describe(`countGamePoints - функция подсчёта результатов:`, () => {
 
-  it(`Простые случаи`, () => {
-    assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.min.array, 1), MOCK_ANSWERS_ARRAY.min.result + 50);
-    assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.max.array, 3), MOCK_ANSWERS_ARRAY.max.result + 150);
-    assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.middle.array, 0), MOCK_ANSWERS_ARRAY.middle.result);
-    assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed1.array, 2), MOCK_ANSWERS_ARRAY.mixed1.result + 100);
-    assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed2.array, 2), MOCK_ANSWERS_ARRAY.mixed2.result + 100);
-    assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.tooShort.array, 0), -1);
-    assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.tooShort.array, 2), -1);
+  describe(`Данные с ошибками`, () => {
+    it(`Правильно считает однородный контент (все верны и медленные, нормальные, быстрые)`, () => {
+      assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.min.array, 1), MOCK_ANSWERS_ARRAY.min.result + 50);
+      assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.max.array, 3), MOCK_ANSWERS_ARRAY.max.result + 150);
+      assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.middle.array, 0), MOCK_ANSWERS_ARRAY.middle.result);
+    });
+    it(`Правильно считает смешанный контент`, () => {
+      assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed1.array, 2), MOCK_ANSWERS_ARRAY.mixed1.result + 100);
+      assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed2.array, 2), MOCK_ANSWERS_ARRAY.mixed2.result + 100);
+    });
+    it(`Если не достаточно ответов возвращает -1`, () => {
+      assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.tooShort.array, 0), -1);
+      assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.tooShort.array, 2), -1);
+    });
   });
 
-  it(`Не достаточно данных`, () => {
-    assert.equal(countGamePoints(), -1);
-    assert.equal(countGamePoints(null), -1);
-    assert.equal(countGamePoints(null, null), -1);
-    assert.equal(countGamePoints(undefined, null), -1);
-    assert.equal(countGamePoints(undefined, 3), -1);
-    assert.equal(countGamePoints(null, 3), -1);
-    assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed1.array), -1);
-    assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed2.array, null), -1);
+  describe(`При не полных параметрах`, () => {
+    it(`Если нет двух параметров, возвращает -1`, () => {
+      assert.equal(countGamePoints(), -1);
+      assert.equal(countGamePoints(null), -1);
+      assert.equal(countGamePoints(null, null), -1);
+      assert.equal(countGamePoints(undefined, null), -1);
+    });
+    it(`Если нет первого параметра, возвращает -1`, () => {
+      assert.equal(countGamePoints(undefined, 3), -1);
+      assert.equal(countGamePoints(null, 3), -1);
+    });
+    it(`Если нет второго параметра, возвращает -1`, () => {
+      assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed1.array), -1);
+      assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed2.array, null), -1);
+    });
   });
 
   describe(`Данные с ошибками`, () => {
@@ -182,20 +194,24 @@ describe(`countGamePoints - функция подсчёта результато
       assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.allError.array, 2), MOCK_ANSWERS_ARRAY.allError.result + 100);
       assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.tooLong.array, 2), MOCK_ANSWERS_ARRAY.tooLong.result + 100);
     });
-    it(`Не полные данные, которые не возможно посчитать правильно и должен вернуть -1`, () => {
+    it(`При ошибке в первом параметре (структура объекта), возвращает -1`, () => {
       assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.errorInTime.array, 2), -1);
       assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.errorInIsCorrect.array, 2), -1);
-      assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed1.array, -1), -1);
-      assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed1.array, [2]), -1);
-      assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed1.array, {liveCount: 2}), -1);
-      assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed1.array, `2`), -1);
+      assert.equal(countGamePoints([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}], 2), -1);
+      assert.equal(countGamePoints([{time: 4}, {time: 4}, {time: 4}, {time: 4}, {time: 4}, {time: 4}, {time: 4}, {time: 4}, {time: 4}, {time: 4}], 2), -1);
+      assert.equal(countGamePoints([{isCorrect: true}, {isCorrect: true}, {isCorrect: true}, {isCorrect: true}, {isCorrect: true}, {isCorrect: true}, {isCorrect: true}, {isCorrect: true}, {isCorrect: true}, {isCorrect: true}], 2), -1);
+    });
+    it(`При ошибке в первом параметре (тип данных), возвращает -1`, () => {
       assert.equal(countGamePoints(`Array`, 2), -1);
       assert.equal(countGamePoints([`Array1`, `Array2`, `Array3`, `Array4`, `Array5`, `Array6`, `Array7`, `Array8`, `Array9`, `Array0`], 2), -1);
       assert.equal(countGamePoints([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], 2), -1);
       assert.equal(countGamePoints([[], [], [], [], [], [], [], [], [], []], 2), -1);
-      assert.equal(countGamePoints([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}], 2), -1);
-      assert.equal(countGamePoints([{time: 4}, {time: 4}, {time: 4}, {time: 4}, {time: 4}, {time: 4}, {time: 4}, {time: 4}, {time: 4}, {time: 4}], 2), -1);
-      assert.equal(countGamePoints([{isCorrect: true}, {isCorrect: true}, {isCorrect: true}, {isCorrect: true}, {isCorrect: true}, {isCorrect: true}, {isCorrect: true}, {isCorrect: true}, {isCorrect: true}, {isCorrect: true}], 2), -1);
+    });
+    it(`При ошибке во втором параметре, возвращает -1`, () => {
+      assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed1.array, -1), -1);
+      assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed1.array, [2]), -1);
+      assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed1.array, {liveCount: 2}), -1);
+      assert.equal(countGamePoints(MOCK_ANSWERS_ARRAY.mixed1.array, `2`), -1);
     });
   });
 
