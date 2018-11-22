@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import changeLevel from './change-level';
 
-describe(`Изменение уровня:`, () => {
+describe(`changeLevel - функция изменения уровня:`, () => {
 
   it(`Простые случаи`, () => {
     assert.equal(changeLevel(1), 2);

@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import changeLiveCounter from './change-live-counter';
 
-describe(`Изменение колличества жизней:`, () => {
+describe(`changeLiveCounter - функция изменения колличества жизней:`, () => {
 
   it(`Простые случаи`, () => {
     assert.equal(changeLiveCounter(3), 2);

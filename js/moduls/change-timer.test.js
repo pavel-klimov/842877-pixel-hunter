@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import changeTimer from './change-timer';
 
-describe(`Изменение таймера:`, () => {
+describe(`changeTimer - функция изменения таймера:`, () => {
 
   it(`Простые случаи`, () => {
     assert.equal(changeTimer(30), 29);
