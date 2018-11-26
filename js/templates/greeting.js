@@ -2,7 +2,7 @@ import getElementFromTemplate from '../moduls/get-element-from-template';
 import getRulesPage from './rules';
 import changeContent from '../moduls/change-content';
 
-const getGreetingPage = function () {
+const getGreetingPage = function (game) {
   const template = getElementFromTemplate(`
   <section class="greeting central--blur">
     <img class="greeting__logo" src="img/logo_ph-big.svg" width="201" height="89" alt="Pixel Hunter">
@@ -26,7 +26,7 @@ const getGreetingPage = function () {
   </section>`);
 
   template.querySelector(`.greeting__continue`).addEventListener(`click`, () => {
-    changeContent(getRulesPage());
+    changeContent(getRulesPage(game));
   });
   return template;
 };

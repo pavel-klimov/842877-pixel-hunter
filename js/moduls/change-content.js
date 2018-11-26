@@ -1,5 +1,5 @@
-const changeContent = function (newPage) {
-  const main = document.querySelector(`#main`);
+const changeContent = function (newPage, selector = `#main`) {
+  const main = document.querySelector(selector);
   while (main.firstChild) {
     main.removeChild(main.firstChild);
   }

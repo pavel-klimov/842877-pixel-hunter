@@ -1,22 +1,11 @@
+import getHeader from './header';
 import getElementFromTemplate from '../moduls/get-element-from-template';
-import getGreetingPage from './greeting';
-import getGameOnePage from './game-1';
+import getGamePage from './game-page';
 import changeContent from '../moduls/change-content';
 
-const getRulesPage = function () {
+const getRulesPage = function (game) {
   const template = getElementFromTemplate(`
-  <header class="header">
-    <button class="back">
-      <span class="visually-hidden">Вернуться к началу</span>
-      <svg class="icon" width="45" height="45" viewBox="0 0 45 45" fill="#000000">
-        <use xlink:href="img/sprite.svg#arrow-left"></use>
-      </svg>
-      <svg class="icon" width="101" height="44" viewBox="0 0 101 44" fill="#000000">
-        <use xlink:href="img/sprite.svg#logo-small"></use>
-      </svg>
-    </button>
-    </header>
-    <section class="rules">
+  <section class="rules">
     <h2 class="rules__title">Правила</h2>
     <ul class="rules__description">
       <li>Угадай 10 раз для каждого изображения фото
@@ -35,19 +24,20 @@ const getRulesPage = function () {
   const form = template.querySelector(`.rules__form`);
   const submitButton = template.querySelector(`.rules__button`);
 
-  template.querySelector(`.back`).addEventListener(`click`, () => {
-    changeContent(getGreetingPage());
-  });
   form.addEventListener(`input`, () => {
     submitButton.disabled = (form.checkValidity()) ? false : true;
   });
   submitButton.addEventListener(`click`, (evt) => {
     evt.preventDefault();
     if (form.checkValidity()) {
-      changeContent(getGameOnePage());
+      changeContent(getGamePage(game));
     }
   });
-  return template;
+
+  let fragment = document.createDocumentFragment();
+  fragment.appendChild(getHeader(game));
+  fragment.appendChild(template);
+  return fragment;
 };
 
 export default getRulesPage;

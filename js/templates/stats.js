@@ -1,21 +1,9 @@
+import getHeader from './header';
 import getElementFromTemplate from '../moduls/get-element-from-template';
-import getGreetingPage from './greeting';
-import changeContent from '../moduls/change-content';
 
-const getStatsPage = function () {
+const getStatsPage = function (game) {
   const template = getElementFromTemplate(`
-  <header class="header">
-    <button class="back">
-      <span class="visually-hidden">Вернуться к началу</span>
-      <svg class="icon" width="45" height="45" viewBox="0 0 45 45" fill="#000000">
-        <use xlink:href="img/sprite.svg#arrow-left"></use>
-      </svg>
-      <svg class="icon" width="101" height="44" viewBox="0 0 101 44" fill="#000000">
-        <use xlink:href="img/sprite.svg#logo-small"></use>
-      </svg>
-    </button>
-    </header>
-    <section class="result">
+  <section class="result">
     <h2 class="result__title">Победа!</h2>
     <table class="result__table">
       <tr>
@@ -116,10 +104,9 @@ const getStatsPage = function () {
     </table>
   </section>`);
 
-  template.querySelector(`.back`).addEventListener(`click`, () => {
-    changeContent(getGreetingPage());
-  });
-
-  return template;
+  let fragment = document.createDocumentFragment();
+  fragment.appendChild(getHeader(game));
+  fragment.appendChild(template);
+  return fragment;
 };
 export default getStatsPage;
