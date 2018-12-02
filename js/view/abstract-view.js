@@ -8,17 +8,17 @@ const wrap = (it) => {
 const AbstractView = class {
   get template() {}
   bind() {}
-  static render() {
+  render() {
     let template = document.createElement(`template`);
     template.innerHTML = this.template.trim();
     return wrap(template);
   }
   get element() {
-    if (!this.element) {
-      this.element = this.render();
+    if (!this._element) {
+      this._element = this.render();
       this.bind();
     }
-    return this.element;
+    return this._element;
   }
 };
 

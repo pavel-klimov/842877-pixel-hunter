@@ -1,10 +1,13 @@
-import getElementFromTemplate from '../moduls/get-element-from-template';
-import getRulesPage from './rules';
-import changeContent from '../moduls/change-content';
+import AbstractView from './abstract-view';
 
-const getGreetingPage = function (game) {
-  const template = getElementFromTemplate(`
-  <section class="greeting central--blur">
+export default class GreetingView extends AbstractView {
+  constructor() {
+    super();
+  }
+
+  get template() {
+    return `
+    <section class="greeting central--blur">
     <img class="greeting__logo" src="img/logo_ph-big.svg" width="201" height="89" alt="Pixel Hunter">
     <div class="greeting__asterisk asterisk"><span class="visually-hidden">Я просто красивая звёздочка</span>*</div>
     <div class="greeting__challenge">
@@ -23,11 +26,12 @@ const getGreetingPage = function (game) {
         <use xlink:href="img/sprite.svg#arrow-right"></use>
       </svg>
     </button>
-  </section>`);
+  </section>`;
+  }
 
-  template.querySelector(`.greeting__continue`).addEventListener(`click`, () => {
-    changeContent(getRulesPage(game));
-  });
-  return template;
-};
-export default getGreetingPage;
+  bind() {
+    this.element.querySelector(`.greeting__continue`).addEventListener(`click`, this.onContinueClick);
+  }
+
+  onContinueClick() {}
+}
