@@ -12,16 +12,22 @@ export default class GameThreeView extends AbstractView {
     const progress = new ProgressView(this.answers);
     return `
     <section class="game">
-    <p class="game__task">Найдите рисунок среди изображений</p>
+    <p class="game__task">${this.question.question}</p>
     <form class="game__content  game__content--triple">
       <div class="game__option">
-        <img src="${this.question[0].src}" alt="Option 1" width="304" height="455">
+        <img src="${this.question.answers[0].image.url}"
+        width="${this.question.answers[0].image.width}"
+        height="${this.question.answers[0].image.height}" alt="Option 1">
       </div>
       <div class="game__option  game__option--selected">
-        <img src="${this.question[1].src}" alt="Option 2" width="304" height="455">
+        <img src="${this.question.answers[1].image.url}"
+        width="${this.question.answers[1].image.width}"
+        height="${this.question.answers[1].image.height}" alt="Option 2">
       </div>
       <div class="game__option">
-        <img src="${this.question[2].src}" alt="Option 3" width="304" height="455">
+        <img src="${this.question.answers[2].image.url}"
+        width="${this.question.answers[2].image.width}"
+        height="${this.question.answers[2].image.height}" alt="Option 3">
       </div>
     </form>
     ${progress.template}

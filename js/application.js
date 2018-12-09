@@ -5,17 +5,34 @@ import GameModel from './model/game';
 import StatsScreen from './presenter/stats';
 import changeContent from './moduls/change-content';
 
+let question;
+
+const checkStatus = (response) => {
+  if (response.status >= 200 && response.status < 300) {
+    return response;
+  } else {
+    throw new Error(`${response.status}: ${response.statusText}`);
+  }
+};
+
 export default class Application {
   static showLoading() {
     const intro = new IntroScreen();
     changeContent(intro.element);
+    window.fetch(`https://es.dump.academy/pixel-hunter/questions`)
+      .then(checkStatus)
+      .then((response) => response.json())
+      .then((data) => {
+        question = data;
+      })
+      .then(() => Application.showWelcome());
   }
   static showWelcome() {
     const welcome = new WelcomeScreen();
     changeContent(welcome.element);
   }
   static showGame() {
-    const model = new GameModel();
+    const model = new GameModel(question);
     const game = new GameScreen(model);
     changeContent(game.element);
     game.startLevel();

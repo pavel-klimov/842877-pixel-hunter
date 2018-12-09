@@ -3,7 +3,7 @@ import GameOneView from '../view/game-1';
 import GameTwoView from '../view/game-2';
 import GameThreeView from '../view/game-3';
 import changeContent from '../moduls/change-content';
-import {ONE_SECOND} from '../data/constants';
+import {ONE_SECOND, QuestionType} from '../data/constants';
 import Application from '../application';
 
 const Timer = class {
@@ -47,7 +47,7 @@ export default class GameScreen {
     const level = this.model.level;
     const question = this.model.questions[level];
     let content;
-    if (question.length === 1) {
+    if (question.type === QuestionType.TINDER_LIKE) {
       content = new GameTwoView(question, this.model.answers);
       content.onAnswer = (evt) => {
         const target = evt.target;
@@ -63,7 +63,7 @@ export default class GameScreen {
           }
         }
       };
-    } else if (question.length === 2) {
+    } else if (question.type === QuestionType.TWO_OF_TWO) {
       content = new GameOneView(question, this.model.answers);
       content.onAnswer = (evt) => {
         const target = evt.target;
@@ -86,7 +86,7 @@ export default class GameScreen {
         const target = evt.target;
         if (target.tagName === `IMG`) {
           let answer = {
-            src: target.src
+            url: target.src
           };
           this.nextLevel(answer);
         }
