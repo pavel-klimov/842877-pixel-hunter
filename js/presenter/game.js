@@ -1,0 +1,186 @@
+import HeaderView from '../view/header';
+import GameOneView from '../view/game-1';
+import GameTwoView from '../view/game-2';
+import GameThreeView from '../view/game-3';
+import changeContent from '../moduls/change-content';
+import {ONE_SECOND} from '../data/constants';
+import Application from '../application';
+
+const Timer = class {
+  constructor(time) {
+    this._time = time;
+  }
+  get time() {
+    return this._time;
+  }
+  startTimer(callback) {
+    this._timer = setTimeout(() => {
+      let repeat = callback();
+      if (repeat) {
+        this.startTimer(callback);
+      }
+    }, ONE_SECOND);
+  }
+  stopTimer() {
+    clearTimeout(this._timer);
+  }
+};
+
+export default class GameScreen {
+  constructor(gameModel) {
+    this.model = gameModel;
+    this.timer = new Timer(this.model.time);
+    this.header = new HeaderView(this.model.liveCounter, this.model.time);
+    this.header.onBackClick = () => {
+      this.timer.stopTimer();
+      Application.showWelcome();
+    };
+    this.content = this.getLevelContent();
+  }
+  get element() {
+    let fragment = document.createDocumentFragment();
+    fragment.appendChild(this.header.element);
+    fragment.appendChild(this.content.element);
+    return fragment;
+  }
+  getLevelContent() {
+    const level = this.model.level;
+    const question = this.model.questions[level];
+    let content;
+    if (question.length === 1) {
+      content = new GameTwoView(question, this.model.answers);
+      content.onAnswer = (evt) => {
+        const target = evt.target;
+        const form = document.querySelector(`.game__content`);
+        if (target.classList.contains(`visually-hidden`)) {
+          if (form.querySelector(`[name=question1]:checked`)) {
+            let answer = {
+              answers: [
+                {type: form.querySelector(`[name=question1]:checked`).value},
+              ]
+            };
+            this.nextLevel(answer);
+          }
+        }
+      };
+    } else if (question.length === 2) {
+      content = new GameOneView(question, this.model.answers);
+      content.onAnswer = (evt) => {
+        const target = evt.target;
+        const form = document.querySelector(`.game__content`);
+        if (target.classList.contains(`visually-hidden`)) {
+          if (form.querySelector(`[name=question1]:checked`) && form.querySelector(`[name=question2]:checked`)) {
+            let answer = {
+              answers: [
+                {type: form.querySelector(`[name=question1]:checked`).value},
+                {type: form.querySelector(`[name=question2]:checked`).value}
+              ]
+            };
+            this.nextLevel(answer);
+          }
+        }
+      };
+    } else {
+      content = new GameThreeView(question, this.model.answers);
+      content.onAnswer = (evt) => {
+        const target = evt.target;
+        if (target.tagName === `IMG`) {
+          let answer = {
+            src: target.src
+          };
+          this.nextLevel(answer);
+        }
+      };
+    }
+    return content;
+  }
+  startLevel() {
+    this.timer.startTimer(() => {
+      this.model.time = this.model.time - 1;
+      if (this.model.time < 0) {
+        this.timer.stopTimer();
+        this.nextLevel();
+        return false;
+      }
+      this.header.timerUpdate(this.model.time);
+      return true;
+    });
+  }
+  nextLevel(answer) {
+    this.timer.stopTimer();
+    this.model.getAnswer(answer);
+    if ((this.model.level >= this.model.questions.length) || (this.model.liveCounter < 0)) {
+      Application.showStats(this.model.answers, this.model.liveCounter);
+    } else {
+      const next = new GameScreen(this.model);
+      changeContent(next.element);
+      next.startLevel();
+    }
+  }
+
+/*
+  gamePage() {
+    const level = game.level;
+    if ((level >= game.questions.length) || (game.liveCounter < 0)) {
+      return statsPage();
+    }
+    const question = game.questions[level];
+    let gameScreen;
+    if (question.length === 1) {
+      gameScreen = new GameTwoView(question, game.answers);
+      gameScreen.onAnswer = (evt) => {
+        const target = evt.target;
+        const form = document.querySelector(`.game__content`);
+        if (target.classList.contains(`visually-hidden`)) {
+          if (form.querySelector(`[name=question1]:checked`)) {
+            let answer = {
+              time: 15,
+              answers: [
+                { type: form.querySelector(`[name=question1]:checked`).value },
+              ]
+            };
+            game.getAnswer(answer);
+            changeContent(gamePage());
+          }
+        }
+      };
+    } else if (question.length === 2) {
+      gameScreen = new GameOneView(question, game.answers);
+      gameScreen.onAnswer = (evt) => {
+        const target = evt.target;
+        const form = document.querySelector(`.game__content`);
+        if (target.classList.contains(`visually-hidden`)) {
+          if (form.querySelector(`[name=question1]:checked`) && form.querySelector(`[name=question2]:checked`)) {
+            let answer = {
+              time: 15,
+              answers: [
+                { type: form.querySelector(`[name=question1]:checked`).value },
+                { type: form.querySelector(`[name=question2]:checked`).value }
+              ]
+            };
+            game.getAnswer(answer);
+            changeContent(gamePage());
+          }
+        }
+      };
+    } else {
+      gameScreen = new GameThreeView(question, game.answers);
+      gameScreen.onAnswer = (evt) => {
+        const target = evt.target;
+        if (target.tagName === `IMG`) {
+          let answer = {
+            time: 15,
+            src: target.src
+          };
+          game.getAnswer(answer);
+          changeContent(gamePage());
+        }
+      };
+    }
+    let fragment = document.createDocumentFragment();
+    fragment.appendChild(headerElement());
+    fragment.appendChild(gameScreen.element);
+    return fragment;
+  };
+*/
+}
