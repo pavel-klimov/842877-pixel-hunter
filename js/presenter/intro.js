@@ -1,7 +1,7 @@
 import IntroView from '../view/intro';
 import Application from '../application';
 
-export default class introPage {
+export default class IntroScreen {
   constructor() {
     this._introView = new IntroView();
     this._introView.onAsterickClick = () => {

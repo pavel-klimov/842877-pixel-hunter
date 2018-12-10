@@ -1,14 +1,24 @@
 import getQuestions from '../data/mock-game-questions';
 import changeLiveCounter from '../moduls/change-live-counter';
-import {MAX_LIVES, MAX_TIMER} from '../data/constants';
+import {MAX_LIVES, MAX_TIMER, QuestionType} from '../data/constants';
+
+const findRightAnswer = function (answers) {
+  if (answers[0].type === answers[1].type) {
+    return 2;
+  } else if (answers[0].type === answers[2].type) {
+    return 1;
+  }
+  return 0;
+};
 
 const checkAnswer = function (answer, question) {
-  if (question.length === 1) {
-    return (question[0].type === answer.answers[0].type);
-  } else if (question.length === 2) {
-    return ((question[0].type === answer.answers[0].type) && (question[1].type === answer.answers[1].type));
+  if (question.type === QuestionType.TINDER_LIKE) {
+    return (question.answers[0].type === answer.answers[0].type);
+  } else if (question.type === QuestionType.TWO_OF_TWO) {
+    return ((question.answers[0].type === answer.answers[0].type) && (question.answers[1].type === answer.answers[1].type));
   }
-  return (question.find((elem) => elem.src === answer.src) && question.find((elem) => elem.src === answer.src).type === `paint`);
+  const index = findRightAnswer(question.answers);
+  return (question.answers[index].image.url === answer.url);
 };
 
 const GameModel = class {
