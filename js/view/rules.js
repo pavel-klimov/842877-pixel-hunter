@@ -1,4 +1,5 @@
 import AbstractView from './abstract-view';
+import {MAX_LIVES, MAX_TIMER} from '../data/constants';
 
 export default class RulesView extends AbstractView {
   constructor() {
@@ -14,8 +15,8 @@ export default class RulesView extends AbstractView {
         <img class="rules__icon" src="img/icon-photo.png" width="32" height="31" alt="Фото"> или рисунок
         <img class="rules__icon" src="img/icon-paint.png" width="32" height="31" alt="Рисунок"></li>
       <li>Фотографиями или рисунками могут быть оба изображения.</li>
-      <li>На каждую попытку отводится 30 секунд.</li>
-      <li>Ошибиться можно не более 3 раз.</li>
+      <li>На каждую попытку отводится ${MAX_TIMER} секунд.</li>
+      <li>Ошибиться можно не более ${MAX_LIVES} раз.</li>
     </ul>
     <p class="rules__ready">Готовы?</p>
     <form class="rules__form">

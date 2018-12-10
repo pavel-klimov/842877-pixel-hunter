@@ -17,9 +17,9 @@ export default class StatsView extends AbstractView {
       let slow = 0;
       let rightAnswers = 0;
       answers.forEach((answer) => {
-        if (answer.time <= 10) {
+        if ((answer.time <= 10) && (answer.time >= 0) && answer.isCorrect) {
           slow++;
-        } else if (answer.time > 20) {
+        } else if (answer.time > 20 && answer.isCorrect) {
           fast++;
         }
         if (answer.isCorrect) {

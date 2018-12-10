@@ -1,5 +1,6 @@
-import getQuestions from './mock-game-questions';
+import getQuestions from '../data/mock-game-questions';
 import changeLiveCounter from '../moduls/change-live-counter';
+import {MAX_LIVES, MAX_TIMER} from '../data/constants';
 
 const checkAnswer = function (answer, question) {
   if (question.length === 1) {
@@ -10,36 +11,41 @@ const checkAnswer = function (answer, question) {
   return (question.find((elem) => elem.src === answer.src) && question.find((elem) => elem.src === answer.src).type === `paint`);
 };
 
-const Game = class {
+const GameModel = class {
   constructor(questions = getQuestions()) {
-    this.liveCounter = 3;
     this.level = 0;
     this.questions = questions;
     this.answers = [];
+    this._live = MAX_LIVES;
+    this._time = MAX_TIMER;
   }
   get liveCounter() {
-    if (this.live) {
-      return this.live;
-    }
-    return 0;
+    return (this._live < 0) ? -1 : this._live;
   }
   set liveCounter(lives) {
-    this.live = lives;
+    this._live = lives;
+  }
+  get time() {
+    return (this._time < 0) ? -1 : this._time;
+  }
+  set time(time) {
+    this._time = (time > MAX_TIMER) ? MAX_TIMER : time;
   }
   addDead() {
     this.liveCounter = changeLiveCounter(this.liveCounter);
   }
   getAnswer(answer) {
-    let isCorrect = checkAnswer(answer, this.questions[this.level]);
+    let isCorrect = (answer) ? checkAnswer(answer, this.questions[this.level]) : false;
     if (!isCorrect) {
       this.liveCounter -= 1;
     }
-    this.answers.push({time: answer.time, isCorrect});
+    this.answers.push({time: this.time, isCorrect});
     this.level += 1;
+    this.time = MAX_TIMER;
   }
   resetGame() {
-    return new Game(this.questions);
+    return new GameModel(this.questions);
   }
 };
 
-export default Game;
+export default GameModel;

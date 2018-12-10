@@ -1,9 +1,11 @@
 import AbstractView from './abstract-view';
+import {MAX_LIVES, MAX_TIMER} from '../data/constants';
 
 export default class GameOneView extends AbstractView {
-  constructor(lives) {
+  constructor(lives = MAX_LIVES, timer = MAX_TIMER) {
     super();
     this.lives = lives;
+    this.timer = timer;
   }
 
   get template() {
@@ -27,14 +29,18 @@ export default class GameOneView extends AbstractView {
         <use xlink:href="img/sprite.svg#logo-small"></use>
       </svg>
     </button>
-    <div class="game__timer">NN</div>
+    <div class="game__timer">${this.timer}</div>
     ${lives}
   </header>`;
   }
 
   bind() {
-    this.element.querySelector(`.back`).addEventListener(`click`, this.onBackClick);
+    this.element.querySelector(`.back`).addEventListener(`click`, () => {
+      this.onBackClick();
+    });
   }
-
+  timerUpdate(time) {
+    document.querySelector(`.game__timer`).innerText = time;
+  }
   onBackClick() {}
 }
