@@ -110,7 +110,7 @@ export default class GameScreen {
     this.timer.stopTimer();
     this.model.getAnswer(answer);
     if ((this.model.level >= this.model.questions.length) || (this.model.liveCounter < 0)) {
-      Application.showStats(this.model.answers, this.model.liveCounter);
+      Application.showStats(this.model.answers, this.model.liveCounter, this.model.name);
     } else {
       const next = new GameScreen(this.model);
       changeContent(next.element);

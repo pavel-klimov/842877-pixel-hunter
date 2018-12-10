@@ -28,8 +28,9 @@ export default class WelcomePage {
     content.onNameSubmit = (evt) => {
       evt.preventDefault();
       const form = document.querySelector(`.rules__form`);
+      const nameInput = form.querySelector(`.rules__input`);
       if (form.checkValidity()) {
-        Application.showGame();
+        Application.showGame(nameInput.value);
       }
     };
     const fragment = document.createDocumentFragment();
