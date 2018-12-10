@@ -24,6 +24,13 @@ const gameResults = function (answers, lives, index = `#`) {
   const [slow, fast, rightAnswers] = countSpecialPrice(answers);
   const gamePoints = countGamePoints(answers, lives);
   const gameResult = (gamePoints <= -1) ? `FAIL` : gamePoints;
+  const resultSimple = (gameResult === `FAIL`) ? `
+    <td class="result__total"></td>
+    <td class="result__total  result__total--final">fail</td>
+  ` : `
+    <td class="result__points">× 100</td>
+    <td class="result__total">${rightAnswers * 100}</td>
+  `;
   const elementFast = ((fast === 0) || (gameResult === `FAIL`)) ? `` : `<tr>
     <td></td>
     <td class="result__extra">Бонус за скорость:</td>
@@ -45,21 +52,21 @@ const gameResults = function (answers, lives, index = `#`) {
     <td class="result__points">× 50</td>
     <td class="result__total">${lives * 50}</td>
   </tr>`;
+  const resultTotal = (gameResult === `FAIL`) ? `` : `<tr>
+    <td colspan="5" class="result__total  result__total--final">${gameResult}</td>
+  </tr>`;
   return `<table class="result__table">
   <tr>
     <td class="result__number">${index}.</td>
     <td colspan="2">
       ${progress.template}
     </td>
-    <td class="result__points">× 100</td>
-    <td class="result__total">${rightAnswers * 100}</td>
+    ${resultSimple}
   </tr>
   ${elementFast}
   ${elementLive}
   ${elementSlow}
-  <tr>
-    <td colspan="5" class="result__total  result__total--final">${gameResult}</td>
-  </tr>
+  ${resultTotal}
 </table>`;
 };
 
