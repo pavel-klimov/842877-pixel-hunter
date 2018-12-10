@@ -3,6 +3,7 @@ import WelcomeScreen from './presenter/welcome';
 import GameScreen from './presenter/game';
 import GameModel from './model/game';
 import StatsScreen from './presenter/stats';
+import ErrorScreen from './presenter/error';
 import changeContent from './moduls/change-content';
 
 let question;
@@ -25,7 +26,8 @@ export default class Application {
       .then((data) => {
         question = data;
       })
-      .then(() => Application.showWelcome());
+      .then(() => Application.showWelcome())
+      .catch((errorMassage) => Application.showError(errorMassage));
   }
   static showWelcome() {
     const welcome = new WelcomeScreen();
@@ -40,5 +42,9 @@ export default class Application {
   static showStats(answers, lives) {
     const stats = new StatsScreen(answers, lives);
     changeContent(stats.element);
+  }
+  static showError(errorMassage) {
+    const error = new ErrorScreen(errorMassage);
+    changeContent(error.element);
   }
 }
