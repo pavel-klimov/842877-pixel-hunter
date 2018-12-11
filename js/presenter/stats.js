@@ -3,14 +3,15 @@ import StatsView from '../view/stats';
 import Application from '../application';
 
 export default class StatsScreen {
-  constructor(answers, lives) {
+  constructor(answers, lives, data) {
     this.answers = answers;
     this.lives = lives;
+    this.data = data;
     this.header = new HeaderView(this.lives);
     this.header.onBackClick = () => {
       Application.showWelcome();
     };
-    this.content = new StatsView(this.answers, this.lives);
+    this.content = new StatsView(this.answers, this.lives, this.data);
   }
   get element() {
     let fragment = document.createDocumentFragment();

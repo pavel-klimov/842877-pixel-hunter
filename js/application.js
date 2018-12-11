@@ -3,45 +3,47 @@ import WelcomeScreen from './presenter/welcome';
 import GameScreen from './presenter/game';
 import GameModel from './model/game';
 import StatsScreen from './presenter/stats';
+import Loader from './moduls/loader';
 import ErrorScreen from './presenter/error';
 import changeContent from './moduls/change-content';
 
 let question;
 
-const checkStatus = (response) => {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  } else {
-    throw new Error(`${response.status}: ${response.statusText}`);
-  }
-};
-
 export default class Application {
   static showLoading() {
     const intro = new IntroScreen();
     changeContent(intro.element);
-    window.fetch(`https://es.dump.academy/pixel-hunter/questions`)
-      .then(checkStatus)
-      .then((response) => response.json())
+    Loader.loadData()
       .then((data) => {
         question = data;
       })
       .then(() => Application.showWelcome())
-      .catch((errorMassage) => Application.showError(errorMassage));
+      .catch(Application.showError);
   }
   static showWelcome() {
     const welcome = new WelcomeScreen();
     changeContent(welcome.element);
   }
-  static showGame() {
+  static showGame(name) {
     const model = new GameModel(question);
     const game = new GameScreen(model);
+    model.name = name;
     changeContent(game.element);
     game.startLevel();
   }
-  static showStats(answers, lives) {
-    const stats = new StatsScreen(answers, lives);
-    changeContent(stats.element);
+  static showStats(answers, lives, playerName) {
+    const state = {
+      date: new Date(),
+      answers,
+      lives
+    };
+    Loader.saveResults(state, playerName)
+      .then(() => Loader.loadResults(playerName))
+      .then((data) => new StatsScreen(answers, lives, data))
+      .then((stats) => {
+        changeContent(stats.element);
+      })
+      .catch(Application.showError);
   }
   static showError(errorMassage) {
     const error = new ErrorScreen(errorMassage);
