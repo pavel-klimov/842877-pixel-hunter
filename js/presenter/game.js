@@ -89,6 +89,11 @@ export default class GameScreen {
             url: target.src
           };
           this.nextLevel(answer);
+        } else if (target.classList.contains(`game__option`)) {
+          let answer = {
+            url: target.querySelector(`img`).src
+          };
+          this.nextLevel(answer);
         }
       };
     }

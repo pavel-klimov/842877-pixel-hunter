@@ -35,4 +35,13 @@ export default class Loader {
     };
     return fetch(REST_API_URL.stats(APP_ID, name), requestSettings).then(checkStatus);
   }
+
+  static loadImage(url) {
+    return new Promise((onLoad, onError) => {
+      const image = new Image();
+      image.onload = () => onLoad(image);
+      image.onerror = () => onError(`Не удалось загрузить картнку: ${url}`);
+      image.src = url;
+    });
+  }
 }
