@@ -1,5 +1,5 @@
 import AbstractView from './abstract-view';
-import {MAX_LIVES, MAX_TIMER} from '../data/constants';
+import {MAX_LIVES, MAX_TIMER, ALERT_TIME} from '../data/constants';
 
 export default class GameOneView extends AbstractView {
   constructor(lives = MAX_LIVES, timer = MAX_TIMER) {
@@ -40,7 +40,13 @@ export default class GameOneView extends AbstractView {
     });
   }
   timerUpdate(time) {
-    document.querySelector(`.game__timer`).innerText = time;
+    if (!this._timeElement) {
+      this._timeElement = document.querySelector(`.game__timer`);
+    }
+    this._timeElement.innerText = time;
+    if (time <= ALERT_TIME) {
+      this._timeElement.classList.add(`game__alert-time`);
+    }
   }
   onBackClick() {}
 }

@@ -19,6 +19,7 @@ export const GAME_RULES = {
   questionCounters: 10
 };
 
+export const ALERT_TIME = 5;
 
 export const DEBAG_MOD = true;
 

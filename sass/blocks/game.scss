@@ -132,3 +132,32 @@
 .game__right-answer {
   outline: 10px solid green;
 }
+
+@keyframes alert-time {
+  0% {
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  95% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.game__alert-time {
+  color: red;
+  animation-duration: 500ms;
+  animation-name: alert-time;
+  animation-iteration-count: infinite;
+}
