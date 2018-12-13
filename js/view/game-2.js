@@ -1,6 +1,7 @@
 import AbstractView from './abstract-view';
 import ProgressView from './progress';
 import {AnswerType} from '../data/constants';
+import {addSpecialClass} from '../moduls/utils';
 
 export default class GameTwoView extends AbstractView {
   constructor(question, answers) {
@@ -19,11 +20,11 @@ export default class GameTwoView extends AbstractView {
         <img src="${this.question.answers[0].image.url}"
         width="${this.question.answers[0].image.width}"
         height="${this.question.answers[0].image.height}" alt="Option 1">
-        <label class="game__answer  game__answer--photo">
+        <label class="game__answer  game__answer--photo ${addSpecialClass(AnswerType.PHOTO, this.question.answers[0].type)}">
           <input class="visually-hidden" name="question1" type="radio" value="${AnswerType.PHOTO}">
           <span>Фото</span>
         </label>
-        <label class="game__answer  game__answer--paint">
+        <label class="game__answer  game__answer--paint ${addSpecialClass(AnswerType.PAINTING, this.question.answers[0].type)}">
           <input class="visually-hidden" name="question1" type="radio" value="${AnswerType.PAINTING}">
           <span>Рисунок</span>
         </label>

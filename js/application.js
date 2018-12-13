@@ -9,6 +9,34 @@ import changeContent from './moduls/change-content';
 
 let question;
 
+const loadAllImage = function (data) {
+  let images = [];
+  data.map((level) => level.answers.map((answer) => {
+    images.push(Loader.loadImage(answer.image.url));
+  }));
+  return images;
+};
+
+const countCoefficient = function (image, frame) {
+  let coefficient;
+  if ((image.width / image.height) <= (frame.width / frame.height)) {
+    coefficient = frame.height / image.height;
+  } else {
+    coefficient = frame.width / image.width;
+  }
+  return coefficient;
+};
+
+const bindAllImage = function (images) {
+  question.map((level) => level.answers.map((answer) => {
+    let element = images.shift();
+    let coefficient = countCoefficient(element, answer.image);
+    answer.image.width = element.width * coefficient;
+    answer.image.height = element.height * coefficient;
+    answer.image.element = element;
+  }));
+};
+
 export default class Application {
   static showLoading() {
     const intro = new IntroScreen();
@@ -16,7 +44,11 @@ export default class Application {
     Loader.loadData()
       .then((data) => {
         question = data;
+        return data;
       })
+      .then(loadAllImage)
+      .then((avatarPromises) => Promise.all(avatarPromises))
+      .then(bindAllImage)
       .then(() => Application.showWelcome())
       .catch(Application.showError);
   }

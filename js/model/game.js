@@ -1,15 +1,7 @@
 import getQuestions from '../data/mock-game-questions';
 import changeLiveCounter from '../moduls/change-live-counter';
 import {MAX_LIVES, MAX_TIMER, QuestionType} from '../data/constants';
-
-const findRightAnswer = function (answers) {
-  if (answers[0].type === answers[1].type) {
-    return 2;
-  } else if (answers[0].type === answers[2].type) {
-    return 1;
-  }
-  return 0;
-};
+import {findRightAnswer} from '../moduls/utils';
 
 const checkAnswer = function (answer, question) {
   if (question.type === QuestionType.TINDER_LIKE) {
