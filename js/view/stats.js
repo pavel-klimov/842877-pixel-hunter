@@ -84,9 +84,9 @@ export default class StatsView extends AbstractView {
     const title = ((gamePoints === -1) || (this.lives === -1)) ? `Поражение.` : `Победа!`;
     let index = 1;
     let tables = gameResults(this.answers, this.lives, index++);
-    for (let i = 0; i < this.data.length; i++) {
-      if ((this.data[i].answer !== this.answers) && (this.data[i].lives !== this.lives)) {
-        tables += gameResults(this.data[i].answers, this.data[i].lives, index++);
+    for (const data of this.data) {
+      if ((data.answer !== this.answers) && (data.lives !== this.lives)) {
+        tables += gameResults(data.answers, data.lives, index++);
       }
     }
     return `
