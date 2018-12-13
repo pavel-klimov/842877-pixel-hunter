@@ -26,14 +26,25 @@ const Timer = class {
   }
 };
 
+
 export default class GameScreen {
   constructor(gameModel) {
     this.model = gameModel;
     this.timer = new Timer(this.model.time);
     this.header = new HeaderView(this.model.liveCounter, this.model.time);
+    this._timerCallback = () => {
+      this.model.time = this.model.time - 1;
+      if (this.model.time < 0) {
+        this.timer.stopTimer();
+        this.nextLevel();
+        return false;
+      }
+      this.header.timerUpdate(this.model.time);
+      return true;
+    };
     this.header.onBackClick = () => {
       this.timer.stopTimer();
-      Application.showWelcome();
+      Application.showWarning(Application.showWelcome, () => this.timer.startTimer(this._timerCallback));
     };
     this.content = this.getLevelContent();
   }
@@ -100,16 +111,7 @@ export default class GameScreen {
     return content;
   }
   startLevel() {
-    this.timer.startTimer(() => {
-      this.model.time = this.model.time - 1;
-      if (this.model.time < 0) {
-        this.timer.stopTimer();
-        this.nextLevel();
-        return false;
-      }
-      this.header.timerUpdate(this.model.time);
-      return true;
-    });
+    this.timer.startTimer(this._timerCallback);
   }
   nextLevel(answer) {
     this.timer.stopTimer();

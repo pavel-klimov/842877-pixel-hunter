@@ -9,7 +9,7 @@ export default class StatsScreen {
     this.data = data;
     this.header = new HeaderView(this.lives);
     this.header.onBackClick = () => {
-      Application.showWelcome();
+      Application.showWarning(Application.showWelcome);
     };
     this.content = new StatsView(this.answers, this.lives, this.data);
   }

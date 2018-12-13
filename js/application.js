@@ -5,7 +5,9 @@ import GameModel from './model/game';
 import StatsScreen from './presenter/stats';
 import Loader from './moduls/loader';
 import ErrorScreen from './presenter/error';
+import WarningScreen from './presenter/warning';
 import changeContent from './moduls/change-content';
+import addContent from './moduls/add-content';
 
 let question;
 
@@ -79,6 +81,10 @@ export default class Application {
   }
   static showError(errorMassage) {
     const error = new ErrorScreen(errorMassage);
-    changeContent(error.element);
+    addContent(error.element);
+  }
+  static showWarning(onConfirmeCallback, onCancelCallback) {
+    const warning = new WarningScreen(onConfirmeCallback, onCancelCallback);
+    addContent(warning.element);
   }
 }
