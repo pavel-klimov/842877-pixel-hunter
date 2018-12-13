@@ -1,7 +1,26 @@
 export const MAX_LIVES = 3;
 export const MAX_TIMER = 30;
 
-export const DEBAG_MOD = false;
+export const BASE_PRICE = 100;
+export const DELTA_PRICE = 50;
+
+export const GAME_RULES = {
+  answerCost: {
+    slow: BASE_PRICE - DELTA_PRICE,
+    normal: BASE_PRICE,
+    quick: BASE_PRICE + DELTA_PRICE
+  },
+  costRange: {
+    slow: [1, 10],
+    normal: [11, 20],
+    quick: [21, MAX_TIMER]
+  },
+  liveCost: DELTA_PRICE,
+  questionCounters: 10
+};
+
+
+export const DEBAG_MOD = true;
 
 export const ONE_SECOND = 1000;
 

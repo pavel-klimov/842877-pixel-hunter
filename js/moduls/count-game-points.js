@@ -1,17 +1,4 @@
-const GAME_RULES = {
-  answerCost: {
-    slow: 50,
-    normal: 100,
-    quick: 150
-  },
-  costRange: {
-    slow: [1, 10],
-    normal: [11, 20],
-    quick: [21, 30]
-  },
-  liveCost: 50,
-  questionCounters: 10
-};
+import {GAME_RULES} from '../data/constants';
 
 const countGamePoints = function (gameResult = null, liveCounter = null) {
   if (!Array.isArray(gameResult) || (gameResult.length < GAME_RULES.questionCounters) || !Number.isInteger(liveCounter) || (liveCounter < 0)) {

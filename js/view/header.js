@@ -11,7 +11,7 @@ export default class GameOneView extends AbstractView {
   get template() {
     let lives = `<div class="game__lives">`;
     const liveCounter = (this.lives >= 0) ? this.lives : 0;
-    for (let i = 0; i < 3 - liveCounter; i++) {
+    for (let i = 0; i < MAX_LIVES - liveCounter; i++) {
       lives += `<img src="img/heart__empty.svg" class="game__heart" alt="Life" width="31" height="27">`;
     }
     for (let i = 0; i < liveCounter; i++) {

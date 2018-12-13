@@ -1,5 +1,3 @@
-import getQuestions from '../data/mock-game-questions';
-import changeLiveCounter from '../moduls/change-live-counter';
 import {MAX_LIVES, MAX_TIMER, QuestionType} from '../data/constants';
 import {findRightAnswer} from '../moduls/utils';
 
@@ -14,7 +12,7 @@ const checkAnswer = function (answer, question) {
 };
 
 const GameModel = class {
-  constructor(questions = getQuestions()) {
+  constructor(questions) {
     this.level = 0;
     this.questions = questions;
     this.answers = [];
@@ -32,9 +30,6 @@ const GameModel = class {
   }
   set time(time) {
     this._time = (time > MAX_TIMER) ? MAX_TIMER : time;
-  }
-  addDead() {
-    this.liveCounter = changeLiveCounter(this.liveCounter);
   }
   getAnswer(answer) {
     let isCorrect = (answer) ? checkAnswer(answer, this.questions[this.level]) : false;
