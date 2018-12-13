@@ -17,7 +17,7 @@ export default class WelcomePage {
   showRules() {
     const header = new HeaderView();
     header.onBackClick = () => {
-      Application.showWelcome();
+      Application.showWarning(Application.showWelcome);
     };
     const content = new RulesView();
     content.onNameInput = () => {
