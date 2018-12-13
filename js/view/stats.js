@@ -91,8 +91,8 @@ export default class StatsView extends AbstractView {
     }
     return `
     <section class="result">
-    <h2 class="result__title">${title}</h2>
-    ${tables}
-  </section>`;
+      <h2 class="result__title">${title}</h2>
+      ${tables}
+    </section>`;
   }
 }

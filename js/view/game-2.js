@@ -14,24 +14,24 @@ export default class GameTwoView extends AbstractView {
     const progress = new ProgressView(this.answers);
     return `
     <section class="game">
-    <p class="game__task">${this.question.question}</p>
-    <form class="game__content  game__content--wide">
-      <div class="game__option">
-        <img src="${this.question.answers[0].image.url}"
-        width="${this.question.answers[0].image.width}"
-        height="${this.question.answers[0].image.height}" alt="Option 1">
-        <label class="game__answer  game__answer--photo ${addSpecialClass(AnswerType.PHOTO, this.question.answers[0].type)}">
-          <input class="visually-hidden" name="question1" type="radio" value="${AnswerType.PHOTO}">
-          <span>Фото</span>
-        </label>
-        <label class="game__answer  game__answer--paint ${addSpecialClass(AnswerType.PAINTING, this.question.answers[0].type)}">
-          <input class="visually-hidden" name="question1" type="radio" value="${AnswerType.PAINTING}">
-          <span>Рисунок</span>
-        </label>
-      </div>
-    </form>
-    ${progress.template}
-  </section>`;
+      <p class="game__task">${this.question.question}</p>
+      <form class="game__content  game__content--wide">
+        <div class="game__option">
+          <img src="${this.question.answers[0].image.url}"
+          width="${this.question.answers[0].image.width}"
+          height="${this.question.answers[0].image.height}" alt="Option 1">
+          <label class="game__answer  game__answer--photo ${addSpecialClass(AnswerType.PHOTO, this.question.answers[0].type)}">
+            <input class="visually-hidden" name="question1" type="radio" value="${AnswerType.PHOTO}">
+            <span>Фото</span>
+          </label>
+          <label class="game__answer  game__answer--paint ${addSpecialClass(AnswerType.PAINTING, this.question.answers[0].type)}">
+            <input class="visually-hidden" name="question1" type="radio" value="${AnswerType.PAINTING}">
+            <span>Рисунок</span>
+          </label>
+        </div>
+      </form>
+      ${progress.template}
+    </section>`;
   }
 
   bind() {

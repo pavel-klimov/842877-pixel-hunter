@@ -38,3 +38,21 @@
   right: 0;
   top: 0;
 }
+
+@keyframes crossfade {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.crossfade {
+  position: absolute;
+  z-index: 1;
+  animation-duration: 500ms;
+  animation-name: crossfade;
+  animation-fill-mode: forwards;
+}
