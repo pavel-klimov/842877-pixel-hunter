@@ -7,14 +7,14 @@ export default class StatsScreen {
     this.answers = answers;
     this.lives = lives;
     this.data = data;
-    this.header = new HeaderView(this.lives);
+    this.header = new HeaderView();
     this.header.onBackClick = () => {
       Application.showWarning(Application.showWelcome);
     };
     this.content = new StatsView(this.answers, this.lives, this.data);
   }
   get element() {
-    let fragment = document.createDocumentFragment();
+    const fragment = document.createDocumentFragment();
     fragment.appendChild(this.header.element);
     fragment.appendChild(this.content.element);
     return fragment;

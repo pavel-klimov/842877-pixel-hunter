@@ -3,6 +3,7 @@ import ProgressView from './progress';
 import countGamePoints from '../moduls/count-game-points';
 import {GAME_RULES, DELTA_PRICE} from '../data/constants';
 
+const FAIL_MESSAGE = `FAIL`;
 const countSpecialPrice = function (answers) {
   let fast = 0;
   let slow = 0;
@@ -24,36 +25,36 @@ const gameResults = function (answers, lives, index = `#`) {
   const progress = new ProgressView(answers);
   const [slow, fast, rightAnswers] = countSpecialPrice(answers);
   const gamePoints = countGamePoints(answers, lives);
-  const gameResult = (gamePoints <= -1) ? `FAIL` : gamePoints;
-  const resultSimple = (gameResult === `FAIL`) ? `
+  const gameResult = (gamePoints <= -1) ? FAIL_MESSAGE : gamePoints;
+  const resultSimple = (gameResult === FAIL_MESSAGE) ? `
     <td class="result__total"></td>
     <td class="result__total  result__total--final">fail</td>
   ` : `
     <td class="result__points">× ${GAME_RULES.answerCost.normal}</td>
     <td class="result__total">${rightAnswers * GAME_RULES.answerCost.normal}</td>
   `;
-  const elementFast = ((fast === 0) || (gameResult === `FAIL`)) ? `` : `<tr>
+  const elementFast = ((fast === 0) || (gameResult === FAIL_MESSAGE)) ? `` : `<tr>
     <td></td>
     <td class="result__extra">Бонус за скорость:</td>
     <td class="result__extra">${fast} <span class="stats__result stats__result--fast"></span></td>
     <td class="result__points">× ${DELTA_PRICE}</td>
     <td class="result__total">${fast * DELTA_PRICE}</td>
   </tr>`;
-  const elementSlow = ((slow === 0) || (gameResult === `FAIL`)) ? `` : `<tr>
+  const elementSlow = ((slow === 0) || (gameResult === FAIL_MESSAGE)) ? `` : `<tr>
     <td></td>
     <td class="result__extra">Штраф за медлительность:</td>
     <td class="result__extra">${slow} <span class="stats__result stats__result--slow"></span></td>
     <td class="result__points">× ${DELTA_PRICE}</td>
     <td class="result__total">-${slow * DELTA_PRICE}</td>
   </tr>`;
-  const elementLive = ((lives <= 0) || (gameResult === `FAIL`)) ? `` : `<tr>
+  const elementLive = ((lives <= 0) || (gameResult === FAIL_MESSAGE)) ? `` : `<tr>
     <td></td>
     <td class="result__extra">Бонус за жизни:</td>
     <td class="result__extra">${lives} <span class="stats__result stats__result--alive"></span></td>
     <td class="result__points">× ${GAME_RULES.liveCost}</td>
     <td class="result__total">${lives * GAME_RULES.liveCost}</td>
   </tr>`;
-  const resultTotal = (gameResult === `FAIL`) ? `` : `<tr>
+  const resultTotal = (gameResult === FAIL_MESSAGE) ? `` : `<tr>
     <td colspan="5" class="result__total  result__total--final">${gameResult}</td>
   </tr>`;
   return `<table class="result__table">

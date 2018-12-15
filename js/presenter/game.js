@@ -1,4 +1,4 @@
-import HeaderView from '../view/header';
+import HeaderView from '../view/header-with-info';
 import GameOneView from '../view/game-1';
 import GameTwoView from '../view/game-2';
 import GameThreeView from '../view/game-3';
@@ -15,7 +15,7 @@ const Timer = class {
   }
   startTimer(callback) {
     this._timer = setTimeout(() => {
-      let repeat = callback();
+      const repeat = callback();
       if (repeat) {
         this.startTimer(callback);
       }
@@ -63,15 +63,13 @@ export default class GameScreen {
       content.onAnswer = (evt) => {
         const target = evt.target;
         const form = document.querySelector(`.game__content`);
-        if (target.classList.contains(`visually-hidden`)) {
-          if (form.querySelector(`[name=question1]:checked`)) {
-            let answer = {
-              answers: [
-                {type: form.querySelector(`[name=question1]:checked`).value},
-              ]
-            };
-            this.nextLevel(answer);
-          }
+        if (target.classList.contains(`visually-hidden`) && form.querySelector(`[name=question1]:checked`)) {
+          const answer = {
+            answers: [
+              {type: form.querySelector(`[name=question1]:checked`).value},
+            ]
+          };
+          this.nextLevel(answer);
         }
       };
     } else if (question.type === QuestionType.TWO_OF_TWO) {
@@ -79,16 +77,14 @@ export default class GameScreen {
       content.onAnswer = (evt) => {
         const target = evt.target;
         const form = document.querySelector(`.game__content`);
-        if (target.classList.contains(`visually-hidden`)) {
-          if (form.querySelector(`[name=question1]:checked`) && form.querySelector(`[name=question2]:checked`)) {
-            let answer = {
-              answers: [
-                {type: form.querySelector(`[name=question1]:checked`).value},
-                {type: form.querySelector(`[name=question2]:checked`).value}
-              ]
-            };
-            this.nextLevel(answer);
-          }
+        if (target.classList.contains(`visually-hidden`) && form.querySelector(`[name=question1]:checked`) && form.querySelector(`[name=question2]:checked`)) {
+          const answer = {
+            answers: [
+              {type: form.querySelector(`[name=question1]:checked`).value},
+              {type: form.querySelector(`[name=question2]:checked`).value}
+            ]
+          };
+          this.nextLevel(answer);
         }
       };
     } else {
@@ -96,12 +92,12 @@ export default class GameScreen {
       content.onAnswer = (evt) => {
         const target = evt.target;
         if (target.tagName === `IMG`) {
-          let answer = {
+          const answer = {
             url: target.src
           };
           this.nextLevel(answer);
         } else if (target.classList.contains(`game__option`)) {
-          let answer = {
+          const answer = {
             url: target.querySelector(`img`).src
           };
           this.nextLevel(answer);

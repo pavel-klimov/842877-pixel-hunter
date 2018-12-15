@@ -21,8 +21,8 @@ export default class WelcomePage {
     };
     const content = new RulesView();
     content.onNameInput = () => {
-      let form = document.querySelector(`.rules__form`);
-      let submitButton = document.querySelector(`.rules__button`);
+      const form = document.querySelector(`.rules__form`);
+      const submitButton = document.querySelector(`.rules__button`);
       submitButton.disabled = (form.checkValidity()) ? false : true;
     };
     content.onNameSubmit = (evt) => {

@@ -1,7 +1,7 @@
-import {DEBAG_MOD} from '../data/constants';
+import {DEBAG_MODE} from '../data/constants';
 
 export const addSpecialClass = function (option, answer) {
-  if (DEBAG_MOD && (option === answer)) {
+  if (DEBAG_MODE && (option === answer)) {
     return `game__right-answer`;
   }
   return ``;
