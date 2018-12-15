@@ -14,7 +14,7 @@ import crossfadeContent from './moduls/crossfade-content';
 let question;
 
 const loadAllImage = function (data) {
-  let images = [];
+  const images = [];
   data.map((level) => level.answers.map((answer) => {
     images.push(Loader.loadImage(answer.image.url));
   }));
@@ -33,8 +33,8 @@ const countCoefficient = function (image, frame) {
 
 const bindAllImage = function (images) {
   question.map((level) => level.answers.map((answer) => {
-    let element = images.shift();
-    let coefficient = countCoefficient(element, answer.image);
+    const element = images.shift();
+    const coefficient = countCoefficient(element, answer.image);
     answer.image.width = element.width * coefficient;
     answer.image.height = element.height * coefficient;
     answer.image.element = element;

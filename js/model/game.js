@@ -32,7 +32,7 @@ const GameModel = class {
     this._time = (time > MAX_TIMER) ? MAX_TIMER : time;
   }
   getAnswer(answer) {
-    let isCorrect = (answer) ? checkAnswer(answer, this.questions[this.level]) : false;
+    const isCorrect = (answer) ? checkAnswer(answer, this.questions[this.level]) : false;
     if (!isCorrect) {
       this.liveCounter -= 1;
     }
