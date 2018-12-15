@@ -121,7 +121,7 @@ const MOCK_ANSWERS_ARRAY = {
       {time: 13, isCorrect: true},
       {time: 25, isCorrect: true},
     ],
-    result: 600
+    result: 950
   },
   errorInIsCorrect: {
     array: [

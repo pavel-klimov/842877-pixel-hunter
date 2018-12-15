@@ -11,7 +11,7 @@ export const GAME_RULES = {
     quick: BASE_PRICE + DELTA_PRICE
   },
   costRange: {
-    slow: [1, 10],
+    slow: [0, 10],
     normal: [11, 20],
     quick: [21, MAX_TIMER]
   },

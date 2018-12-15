@@ -8,6 +8,7 @@ import ErrorScreen from './presenter/error';
 import WarningScreen from './presenter/warning';
 import changeContent from './moduls/change-content';
 import addContent from './moduls/add-content';
+import crossfadeContent from './moduls/crossfade-content';
 
 let question;
 
@@ -51,12 +52,16 @@ export default class Application {
       .then(loadAllImage)
       .then((avatarPromises) => Promise.all(avatarPromises))
       .then(bindAllImage)
-      .then(() => Application.showWelcome())
+      .then(() => Application.specialShowWelcome())
       .catch(Application.showError);
   }
   static showWelcome() {
     const welcome = new WelcomeScreen();
     changeContent(welcome.element);
+  }
+  static specialShowWelcome() {
+    const welcome = new WelcomeScreen();
+    crossfadeContent(welcome.element);
   }
   static showGame(name) {
     const model = new GameModel(question);

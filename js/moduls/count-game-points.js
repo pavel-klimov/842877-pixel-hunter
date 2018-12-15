@@ -5,16 +5,16 @@ const countGamePoints = function (gameResult = null, liveCounter = null) {
     return -1;
   }
   let gamePoints = 0;
-  for (let i = 0; i < GAME_RULES.questionCounters; i++) {
-    if ((typeof gameResult[i] !== `object`) || !(`time` in gameResult[i]) || !(`isCorrect` in gameResult[i]) || !Number.isInteger(gameResult[i].time) || (typeof gameResult[i].isCorrect !== `boolean`)) {
+  for (const levelResult of gameResult) {
+    if ((typeof levelResult !== `object`) || !(`time` in levelResult) || !(`isCorrect` in levelResult) || !Number.isInteger(levelResult.time) || (typeof levelResult.isCorrect !== `boolean`)) {
       return -1;
     }
-    if (gameResult[i].isCorrect) {
-      if ((gameResult[i].time >= GAME_RULES.costRange.slow[0]) && (gameResult[i].time <= GAME_RULES.costRange.slow[1])) {
+    if (levelResult.isCorrect) {
+      if ((levelResult.time >= GAME_RULES.costRange.slow[0]) && (levelResult.time <= GAME_RULES.costRange.slow[1])) {
         gamePoints += GAME_RULES.answerCost.slow;
-      } else if ((gameResult[i].time >= GAME_RULES.costRange.normal[0]) && (gameResult[i].time <= GAME_RULES.costRange.normal[1])) {
+      } else if ((levelResult.time >= GAME_RULES.costRange.normal[0]) && (levelResult.time <= GAME_RULES.costRange.normal[1])) {
         gamePoints += GAME_RULES.answerCost.normal;
-      } else if ((gameResult[i].time >= GAME_RULES.costRange.quick[0]) && (gameResult[i].time <= GAME_RULES.costRange.quick[1])) {
+      } else if ((levelResult.time >= GAME_RULES.costRange.quick[0]) && (levelResult.time <= GAME_RULES.costRange.quick[1])) {
         gamePoints += GAME_RULES.answerCost.quick;
       }
     }
