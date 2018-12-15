@@ -49,7 +49,7 @@ export default class GameScreen {
     this.content = this.getLevelContent();
   }
   get element() {
-    let fragment = document.createDocumentFragment();
+    const fragment = document.createDocumentFragment();
     fragment.appendChild(this.header.element);
     fragment.appendChild(this.content.element);
     return fragment;

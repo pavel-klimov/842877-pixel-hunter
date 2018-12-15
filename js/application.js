@@ -1,5 +1,6 @@
 import IntroScreen from './presenter/intro';
 import WelcomeScreen from './presenter/welcome';
+import RulesScreen from './presenter/rules';
 import GameScreen from './presenter/game';
 import GameModel from './model/game';
 import StatsScreen from './presenter/stats';
@@ -58,6 +59,10 @@ export default class Application {
   static showWelcome() {
     const welcome = new WelcomeScreen();
     changeContent(welcome.element);
+  }
+  static showRules() {
+    const rules = new RulesScreen();
+    changeContent(rules.element);
   }
   static specialShowWelcome() {
     const welcome = new WelcomeScreen();
