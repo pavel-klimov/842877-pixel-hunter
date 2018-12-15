@@ -54,57 +54,65 @@ export default class GameScreen {
     fragment.appendChild(this.content.element);
     return fragment;
   }
-  getLevelContent() {
-    const level = this.model.level;
-    const question = this.model.questions[level];
-    let content;
-    if (question.type === QuestionType.TINDER_LIKE) {
-      content = new GameTwoView(question, this.model.answers);
-      content.onAnswer = (evt) => {
-        const target = evt.target;
-        const form = document.querySelector(`.game__content`);
-        if (target.classList.contains(`visually-hidden`) && form.querySelector(`[name=question1]:checked`)) {
-          const answer = {
-            answers: [
-              {type: form.querySelector(`[name=question1]:checked`).value},
-            ]
-          };
-          this.nextLevel(answer);
-        }
-      };
-    } else if (question.type === QuestionType.TWO_OF_TWO) {
-      content = new GameOneView(question, this.model.answers);
-      content.onAnswer = (evt) => {
-        const target = evt.target;
-        const form = document.querySelector(`.game__content`);
-        if (target.classList.contains(`visually-hidden`) && form.querySelector(`[name=question1]:checked`) && form.querySelector(`[name=question2]:checked`)) {
-          const answer = {
-            answers: [
-              {type: form.querySelector(`[name=question1]:checked`).value},
-              {type: form.querySelector(`[name=question2]:checked`).value}
-            ]
-          };
-          this.nextLevel(answer);
-        }
-      };
-    } else {
-      content = new GameThreeView(question, this.model.answers);
-      content.onAnswer = (evt) => {
-        const target = evt.target;
-        if (target.tagName === `IMG`) {
-          const answer = {
-            url: target.src
-          };
-          this.nextLevel(answer);
-        } else if (target.classList.contains(`game__option`)) {
-          const answer = {
-            url: target.querySelector(`img`).src
-          };
-          this.nextLevel(answer);
-        }
-      };
-    }
+  _getGameOneContent(question) {
+    const content = new GameOneView(question, this.model.answers);
+    content.onAnswer = (evt) => {
+      const target = evt.target;
+      const form = document.querySelector(`.game__content`);
+      if (target.classList.contains(`visually-hidden`) && form.querySelector(`[name=question1]:checked`) && form.querySelector(`[name=question2]:checked`)) {
+        const answer = {
+          answers: [
+            {type: form.querySelector(`[name=question1]:checked`).value},
+            {type: form.querySelector(`[name=question2]:checked`).value}
+          ]
+        };
+        this.nextLevel(answer);
+      }
+    };
     return content;
+  }
+  _getGameTwoContent(question) {
+    const content = new GameTwoView(question, this.model.answers);
+    content.onAnswer = (evt) => {
+      const target = evt.target;
+      const form = document.querySelector(`.game__content`);
+      if (target.classList.contains(`visually-hidden`) && form.querySelector(`[name=question1]:checked`)) {
+        const answer = {
+          answers: [
+            {type: form.querySelector(`[name=question1]:checked`).value},
+          ]
+        };
+        this.nextLevel(answer);
+      }
+    };
+    return content;
+  }
+  _getGameThreeContent(question) {
+    const content = new GameThreeView(question, this.model.answers);
+    content.onAnswer = (evt) => {
+      const target = evt.target;
+      if (target.tagName === `IMG`) {
+        const answer = {
+          url: target.src
+        };
+        this.nextLevel(answer);
+      } else if (target.classList.contains(`game__option`)) {
+        const answer = {
+          url: target.querySelector(`img`).src
+        };
+        this.nextLevel(answer);
+      }
+    };
+    return content;
+  }
+  getLevelContent() {
+    const question = this.model.questions[this.model.level];
+    if (question.type === QuestionType.TINDER_LIKE) {
+      return this._getGameTwoContent(question);
+    } else if (question.type === QuestionType.TWO_OF_TWO) {
+      return this._getGameOneContent(question);
+    }
+    return this._getGameThreeContent(question);
   }
   startLevel() {
     this.timer.startTimer(this._timerCallback);
