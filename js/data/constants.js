@@ -21,7 +21,7 @@ export const GAME_RULES = {
 
 export const ALERT_TIME = 5;
 
-export const DEBAG_MODE = true;
+export const DEBUG_MODE = true;
 
 export const ONE_SECOND = 1000;
 

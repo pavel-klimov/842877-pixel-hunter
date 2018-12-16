@@ -7,8 +7,8 @@ const checkAnswer = function (answer, question) {
   } else if (question.type === QuestionType.TWO_OF_TWO) {
     return ((question.answers[0].type === answer.answers[0].type) && (question.answers[1].type === answer.answers[1].type));
   }
-  const index = findRightAnswer(question.answers);
-  return (question.answers[index].image.url === answer.url);
+  const rightAnswwer = findRightAnswer(question.answers);
+  return (rightAnswwer.image.url === answer.url);
 };
 
 const GameModel = class {
