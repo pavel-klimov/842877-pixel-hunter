@@ -1,10 +1,12 @@
 import {DEBAG_MODE} from '../data/constants';
+const RIGHT_ANSWER_CLASS = `game__right-answer`;
+const WRONG_ANSWER_CLASS = ``;
 
 export const addSpecialClass = function (option, answer) {
   if (DEBAG_MODE && (option === answer)) {
-    return `game__right-answer`;
+    return RIGHT_ANSWER_CLASS;
   }
-  return ``;
+  return WRONG_ANSWER_CLASS;
 };
 
 export const findRightAnswer = function (answers) {
