@@ -21,14 +21,18 @@ export default class RulesView extends AbstractView {
       <p class="rules__ready">Готовы?</p>
       <form class="rules__form">
         <input class="rules__input" type="text" placeholder="Ваше Имя" required>
-        <button class="rules__button  continue" type="submit" disabled>Go!</button>
+        <button class="rules__button  continue" type="submit" disabled="${this.validity}">Go!</button>
       </form>
     </section>`;
   }
 
   bind() {
     this.element.querySelector(`.rules__form`).addEventListener(`input`, this.onNameInput);
-    this.element.querySelector(`.rules__button`).addEventListener(`click`, this.onNameSubmit);
+    this.element.querySelector(`.rules__form`).addEventListener(`submit`, this.onNameSubmit);
+  }
+
+  updateSubmitDisabled() {
+    document.querySelector(`.rules__button`).disabled = (document.querySelector(`.rules__form`).checkValidity()) ? false : true;
   }
 
   onNameInput() {}

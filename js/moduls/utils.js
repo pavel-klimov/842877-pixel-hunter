@@ -23,5 +23,5 @@ export const findRightAnswer = function (answers) {
       return result[key][0];
     }
   }
-  return false;
+  return {};
 };

@@ -9,17 +9,14 @@ export default class RulesPage {
       Application.showWarning(Application.showWelcome);
     };
     this.content = new RulesView();
-    this.content.onNameInput = () => {
-      const form = document.querySelector(`.rules__form`);
-      const submitButton = document.querySelector(`.rules__button`);
-      submitButton.disabled = (form.checkValidity()) ? false : true;
+    this.content.onNameInput = (evt) => {
+      this._name = evt.target.value;
+      this.content.updateSubmitDisabled();
     };
     this.content.onNameSubmit = (evt) => {
       evt.preventDefault();
-      const form = document.querySelector(`.rules__form`);
-      const nameInput = form.querySelector(`.rules__input`);
-      if (form.checkValidity()) {
-        Application.showGame(nameInput.value);
+      if (evt.target.checkValidity()) {
+        Application.showGame(this._name);
       }
     };
   }
