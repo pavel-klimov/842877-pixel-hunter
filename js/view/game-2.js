@@ -38,5 +38,17 @@ export default class GameTwoView extends AbstractView {
     this.element.querySelector(`.game__content`).addEventListener(`click`, this.onAnswer);
   }
 
+  checkAnswer(target, callback) {
+    const form = document.querySelector(`.game__content`);
+    if (target.classList.contains(`visually-hidden`) && form.querySelector(`[name=question1]:checked`)) {
+      const answer = {
+        answers: [
+          {type: form.querySelector(`[name=question1]:checked`).value},
+        ]
+      };
+      callback(answer);
+    }
+  }
+
   onAnswer() {}
 }

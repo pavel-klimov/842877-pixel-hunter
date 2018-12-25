@@ -40,5 +40,19 @@ export default class GameThreeView extends AbstractView {
     this.element.querySelector(`.game__content`).addEventListener(`click`, this.onAnswer);
   }
 
+  checkAnswer(target, callback) {
+    if (target.tagName === `IMG`) {
+      const answer = {
+        url: target.src
+      };
+      callback(answer);
+    } else if (target.classList.contains(`game__option`)) {
+      const answer = {
+        url: target.querySelector(`img`).src
+      };
+      callback(answer);
+    }
+  }
+
   onAnswer() {}
 }

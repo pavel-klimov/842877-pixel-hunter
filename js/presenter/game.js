@@ -26,7 +26,6 @@ const Timer = class {
   }
 };
 
-
 export default class GameScreen {
   constructor(gameModel) {
     this.model = gameModel;
@@ -46,7 +45,10 @@ export default class GameScreen {
       this.timer.stopTimer();
       Application.showWarning(Application.showWelcome, () => this.timer.startTimer(this._timerCallback));
     };
-    this.content = this.getLevelContent();
+    this.content = this._getLevelContent();
+    this.content.onAnswer = (evt) => {
+      this.content.checkAnswer(evt.target, this.nextLevel.bind(this));
+    };
   }
   get element() {
     const fragment = document.createDocumentFragment();
@@ -54,65 +56,14 @@ export default class GameScreen {
     fragment.appendChild(this.content.element);
     return fragment;
   }
-  _getGameOneContent(question) {
-    const content = new GameOneView(question, this.model.answers);
-    content.onAnswer = (evt) => {
-      const target = evt.target;
-      const form = document.querySelector(`.game__content`);
-      if (target.classList.contains(`visually-hidden`) && form.querySelector(`[name=question1]:checked`) && form.querySelector(`[name=question2]:checked`)) {
-        const answer = {
-          answers: [
-            {type: form.querySelector(`[name=question1]:checked`).value},
-            {type: form.querySelector(`[name=question2]:checked`).value}
-          ]
-        };
-        this.nextLevel(answer);
-      }
-    };
-    return content;
-  }
-  _getGameTwoContent(question) {
-    const content = new GameTwoView(question, this.model.answers);
-    content.onAnswer = (evt) => {
-      const target = evt.target;
-      const form = document.querySelector(`.game__content`);
-      if (target.classList.contains(`visually-hidden`) && form.querySelector(`[name=question1]:checked`)) {
-        const answer = {
-          answers: [
-            {type: form.querySelector(`[name=question1]:checked`).value},
-          ]
-        };
-        this.nextLevel(answer);
-      }
-    };
-    return content;
-  }
-  _getGameThreeContent(question) {
-    const content = new GameThreeView(question, this.model.answers);
-    content.onAnswer = (evt) => {
-      const target = evt.target;
-      if (target.tagName === `IMG`) {
-        const answer = {
-          url: target.src
-        };
-        this.nextLevel(answer);
-      } else if (target.classList.contains(`game__option`)) {
-        const answer = {
-          url: target.querySelector(`img`).src
-        };
-        this.nextLevel(answer);
-      }
-    };
-    return content;
-  }
-  getLevelContent() {
+  _getLevelContent() {
     const question = this.model.questions[this.model.level];
     if (question.type === QuestionType.TINDER_LIKE) {
-      return this._getGameTwoContent(question);
+      return new GameTwoView(question, this.model.answers);
     } else if (question.type === QuestionType.TWO_OF_TWO) {
-      return this._getGameOneContent(question);
+      return new GameOneView(question, this.model.answers);
     }
-    return this._getGameThreeContent(question);
+    return new GameThreeView(question, this.model.answers);
   }
   startLevel() {
     this.timer.startTimer(this._timerCallback);
