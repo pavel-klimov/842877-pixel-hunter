@@ -28,6 +28,11 @@ export default class WarningView extends AbstractView {
     this.element.querySelector(`.modal__close`).addEventListener(`click`, this.onCancel);
   }
 
+  removeModal() {
+    const main = document.querySelector(`#main`);
+    main.removeChild(main.querySelector(`.modal`));
+  }
+
   onConfirme() {}
   onCancel() {}
 
