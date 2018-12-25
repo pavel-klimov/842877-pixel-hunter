@@ -1,4 +1,4 @@
-import HeaderView from '../view/header';
+import HeaderView from '../view/header-with-info';
 import GameOneView from '../view/game-1';
 import GameTwoView from '../view/game-2';
 import GameThreeView from '../view/game-3';
@@ -15,7 +15,7 @@ const Timer = class {
   }
   startTimer(callback) {
     this._timer = setTimeout(() => {
-      let repeat = callback();
+      const repeat = callback();
       if (repeat) {
         this.startTimer(callback);
       }
@@ -25,7 +25,6 @@ const Timer = class {
     clearTimeout(this._timer);
   }
 };
-
 
 export default class GameScreen {
   constructor(gameModel) {
@@ -46,69 +45,25 @@ export default class GameScreen {
       this.timer.stopTimer();
       Application.showWarning(Application.showWelcome, () => this.timer.startTimer(this._timerCallback));
     };
-    this.content = this.getLevelContent();
+    this.content = this._getLevelContent();
+    this.content.onAnswer = (evt) => {
+      this.content.checkAnswer(evt.target, this.nextLevel.bind(this));
+    };
   }
   get element() {
-    let fragment = document.createDocumentFragment();
+    const fragment = document.createDocumentFragment();
     fragment.appendChild(this.header.element);
     fragment.appendChild(this.content.element);
     return fragment;
   }
-  getLevelContent() {
-    const level = this.model.level;
-    const question = this.model.questions[level];
-    let content;
+  _getLevelContent() {
+    const question = this.model.questions[this.model.level];
     if (question.type === QuestionType.TINDER_LIKE) {
-      content = new GameTwoView(question, this.model.answers);
-      content.onAnswer = (evt) => {
-        const target = evt.target;
-        const form = document.querySelector(`.game__content`);
-        if (target.classList.contains(`visually-hidden`)) {
-          if (form.querySelector(`[name=question1]:checked`)) {
-            let answer = {
-              answers: [
-                {type: form.querySelector(`[name=question1]:checked`).value},
-              ]
-            };
-            this.nextLevel(answer);
-          }
-        }
-      };
+      return new GameTwoView(question, this.model.answers);
     } else if (question.type === QuestionType.TWO_OF_TWO) {
-      content = new GameOneView(question, this.model.answers);
-      content.onAnswer = (evt) => {
-        const target = evt.target;
-        const form = document.querySelector(`.game__content`);
-        if (target.classList.contains(`visually-hidden`)) {
-          if (form.querySelector(`[name=question1]:checked`) && form.querySelector(`[name=question2]:checked`)) {
-            let answer = {
-              answers: [
-                {type: form.querySelector(`[name=question1]:checked`).value},
-                {type: form.querySelector(`[name=question2]:checked`).value}
-              ]
-            };
-            this.nextLevel(answer);
-          }
-        }
-      };
-    } else {
-      content = new GameThreeView(question, this.model.answers);
-      content.onAnswer = (evt) => {
-        const target = evt.target;
-        if (target.tagName === `IMG`) {
-          let answer = {
-            url: target.src
-          };
-          this.nextLevel(answer);
-        } else if (target.classList.contains(`game__option`)) {
-          let answer = {
-            url: target.querySelector(`img`).src
-          };
-          this.nextLevel(answer);
-        }
-      };
+      return new GameOneView(question, this.model.answers);
     }
-    return content;
+    return new GameThreeView(question, this.model.answers);
   }
   startLevel() {
     this.timer.startTimer(this._timerCallback);

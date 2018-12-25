@@ -9,7 +9,7 @@ const AbstractView = class {
   get template() {}
   bind() {}
   render() {
-    let template = document.createElement(`template`);
+    const template = document.createElement(`template`);
     template.innerHTML = this.template.trim();
     return wrap(template);
   }

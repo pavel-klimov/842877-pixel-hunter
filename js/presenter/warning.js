@@ -9,8 +9,7 @@ export default class WarningScreen {
     };
     this._warningView.onCancel = (evt) => {
       evt.preventDefault();
-      const main = document.querySelector(`#main`);
-      main.removeChild(main.querySelector(`.modal`));
+      this._warningView.removeModal();
       onCancelCallback();
     };
   }

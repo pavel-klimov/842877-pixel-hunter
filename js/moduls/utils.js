@@ -1,17 +1,27 @@
-import {DEBAG_MOD} from '../data/constants';
+import {DEBUG_MODE} from '../data/constants';
+const RIGHT_ANSWER_CLASS = `game__right-answer`;
+const WRONG_ANSWER_CLASS = ``;
 
 export const addSpecialClass = function (option, answer) {
-  if (DEBAG_MOD && (option === answer)) {
-    return `game__right-answer`;
+  if (DEBUG_MODE && (option === answer)) {
+    return RIGHT_ANSWER_CLASS;
   }
-  return ``;
+  return WRONG_ANSWER_CLASS;
 };
 
 export const findRightAnswer = function (answers) {
-  if (answers[0].type === answers[1].type) {
-    return 2;
-  } else if (answers[0].type === answers[2].type) {
-    return 1;
+  const result = {};
+  for (let answer of answers) {
+    if (result[answer.type]) {
+      result[answer.type].push(answer);
+    } else {
+      result[answer.type] = [answer];
+    }
   }
-  return 0;
+  for (let key in result) {
+    if (result[key].length === 1) {
+      return result[key][0];
+    }
+  }
+  return {};
 };
