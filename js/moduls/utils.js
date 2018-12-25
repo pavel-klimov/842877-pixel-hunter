@@ -10,10 +10,18 @@ export const addSpecialClass = function (option, answer) {
 };
 
 export const findRightAnswer = function (answers) {
-  if (answers[0].type === answers[1].type) {
-    return answers[2];
-  } else if (answers[0].type === answers[2].type) {
-    return answers[1];
+  const result = {};
+  for (let answer of answers) {
+    if (result[answer.type]) {
+      result[answer.type].push(answer);
+    } else {
+      result[answer.type] = [answer];
+    }
   }
-  return answers[0];
+  for (let key in result) {
+    if (result[key].length === 1) {
+      return result[key][0];
+    }
+  }
+  return false;
 };
